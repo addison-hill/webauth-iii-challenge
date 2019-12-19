@@ -2,9 +2,10 @@ const db = require("../database/dbConfig.js");
 
 module.exports = {
   find,
-  findBy,
+  findByDepartment,
   add,
-  findById
+  findById,
+  findBy
 };
 
 function find() {
@@ -13,6 +14,13 @@ function find() {
 
 function findBy(filter) {
   return db("users").where(filter);
+}
+
+function findByDepartment(department) {
+  return db
+    .select("*")
+    .from("users")
+    .where({ department: department });
 }
 
 async function add(user) {

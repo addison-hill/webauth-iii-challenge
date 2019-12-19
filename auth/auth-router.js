@@ -18,7 +18,7 @@ router.post("/register", (req, res) => {
     });
 });
 
-router.post("/login", (req, res) => {
+router.post("/login", validateUser, (req, res) => {
   let { username, password } = req.body;
 
   Users.findBy({ username })
@@ -39,6 +39,18 @@ router.post("/login", (req, res) => {
     });
 });
 
+// Validate User middleware
+function validateUser(req, res, next) {
+  const { username, password } = req.body;
+
+  if (username && password) {
+    next();
+  } else {
+    res.status(400).json({ message: "Please provide username and password" });
+  }
+}
+
+// The Token
 function signToken(user) {
   const payload = {
     username: user.username,
